@@ -1,4 +1,4 @@
-# Proyecto Melody Ayudantía Ingeniería de Software 2023-1
+# Proyecto Melody Ayudantía Ingeniería de Software 2023-2
 Bienvenid@s al código desarrollado en las ayudantías de Ingeniería de Software correspondientes al proyecto de la asignatura.
 
 ## IMPORTANTE
