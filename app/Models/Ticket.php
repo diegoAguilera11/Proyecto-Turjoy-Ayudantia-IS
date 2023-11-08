@@ -11,9 +11,15 @@ class Ticket extends Model
 
     protected $fillable = [
         'code',
-        'sate',
+        'seat',
         'total',
-        'user_id',
-        'travel_id'
+        'date',
+        // 'user_id',
+        'travel_id',
     ];
+
+    public function travelDates()
+    {
+        return $this->belongsTo(Travel::class, 'travel_id');
+    }
 }

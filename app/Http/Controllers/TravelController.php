@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\TravelsImport;
+use App\Models\Ticket;
 use App\Models\Travel;
 use Illuminate\Http\Request;
-use App\Imports\TravelsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TravelController extends Controller
 {
     public function indexAddTravels()
     {
-
         if (session('validRows') || session('invalidRows') || session('duplicatedRows')) {
             session()->put('validRows', []);
             session()->put('invalidRows', []);
@@ -25,7 +25,7 @@ class TravelController extends Controller
         return view('admin.travel.index', [
             'validRows' => session('validRows'),
             'invalidRows' => session('invalidRows'),
-            'duplicatedRows' => session('duplicatedRows')
+            'duplicatedRows' => session('duplicatedRows'),
         ]);
     }
 
@@ -34,19 +34,19 @@ class TravelController extends Controller
         return view('admin.travel.index', [
             'validRows' => session('validRows'),
             'invalidRows' => session('invalidRows'),
-            'duplicatedRows' => session('duplicatedRows')
+            'duplicatedRows' => session('duplicatedRows'),
         ]);
     }
+
     public function travelCheck(Request $request)
     {
-
-        //Validar el archivo general
+        // Validar el archivo general
         $messages = makeMessages();
         $this->validate($request, [
             'document' => ['required', 'max:5120', 'mimes:xlsx'],
         ], $messages);
 
-        //Validar el archivo excel en detalle
+        // Validar el archivo excel en detalle
         if ($request->hasFile('document')) {
             $file = request()->file('document');
 
@@ -87,7 +87,7 @@ class TravelController extends Controller
                 }
             }
 
-            //Eliminar registros (filas) vacios del  documento excel
+            // Eliminar registros (filas) vacios del  documento excel
             $invalidRows = array_filter($invalidRows, function ($invalidrow) {
                 return $invalidrow['origen'] !== null || $invalidrow['destino'] !== null || $invalidrow['cantidad_de_asientos'] !== null || $invalidrow['tarifa_base'] !== null;
             });
@@ -102,5 +102,62 @@ class TravelController extends Controller
 
             return redirect()->route('travelsAdd.index');
         }
+    }
+
+    public function obtainOrigins()
+    {
+        $origins = Travel::distinct()->orderBy('origin', 'asc')->pluck('origin');
+
+        return response()->json([
+            'origins' => $origins,
+        ]);
+    }
+
+    public function obtainDestinations()
+    {
+        $destinations = Travel::distinct()->orderBy('destination', 'asc')->pluck('destination');
+
+        return response()->json([
+            'destinations' => $destinations,
+        ]);
+    }
+
+    public function searchDestinations($origin)
+    {
+        $destinations = Travel::where('origin', $origin)->orderBy('destination', 'asc')->pluck('destination');
+
+        return response()->json([
+            'destination' => $destinations,
+        ]);
+    }
+
+    public function seatings($origin, $destination, $date)
+    {
+        // Obtenemos el viaje segun el origen y destino ingresado.
+        $travel = Travel::where('origin', $origin)->where('destination', $destination)->first();
+
+        if ($travel) {
+            $tickets = Ticket::where('travel_id', $travel->id)->where('date', $date)->sum('seat');
+
+            $seatNow = $travel->seat_quantity - $tickets;
+
+            return response()->json(['seat' => $seatNow, 'travel' => $travel]);
+        }
+    }
+
+    public function checkTravel(Request $request)
+    {
+        dd($request);
+    }
+
+    public function homeIndex()
+    {
+        $travels = Travel::get()->count();
+
+        // dd($travels);
+
+        return view('home', [
+            'countTravels' => $travels,
+        ]);
     }
 }

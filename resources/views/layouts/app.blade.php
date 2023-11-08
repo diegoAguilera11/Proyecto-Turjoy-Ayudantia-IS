@@ -8,7 +8,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>@yield('title')</title>
 </head>
-
 <body class="bg-gradient-to-br from-red-500 to-blue-500 bg-no-repeat bg-cover min-h-screen">
     <nav class="bg-gradient-to-bl from-teal-400 to-blue-800">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -45,12 +44,14 @@
                                 class="block py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-white transition-all dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Iniciar
                                 Sesión</a>
                         </li>
+
+                        <div class="text-center">
+                        </div>
                     @endguest
                 </ul>
             </div>
         </div>
     </nav>
-
     <main class="container mx-auto">
         @yield('content')
     </main>
@@ -58,5 +59,5 @@
         Turjoy - Todos los derechos reservados {{ now()->year }}
     </footer>
 </body>
-
+@yield('js')
 </html>
