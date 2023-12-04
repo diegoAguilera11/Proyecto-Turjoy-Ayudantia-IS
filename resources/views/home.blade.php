@@ -94,12 +94,12 @@
             const selectedDestination = document.getElementById('destinations').value;
 
             const datePicker = document.getElementById('date').value;
-            const selectedSeat = document.getElementById('seat').value;
-            const fecha = new Date(datePicker);
-            const dateFormatted = fecha.toLocaleDateString('es-ES', datePicker)
-
             const baseRate = document.getElementById('base-rate').value;
+            const selectedSeat = document.getElementById('seat').value;
 
+            const fecha = new Date(datePicker);
+            fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset());
+            const dateFormatted = fecha.toLocaleDateString('es-CL', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
             e.preventDefault();
 

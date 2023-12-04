@@ -18,8 +18,17 @@ class Ticket extends Model
         'travel_id',
     ];
 
+    // has many
+
+    // belong to
+
     public function travelDates()
     {
         return $this->belongsTo(Travel::class, 'travel_id');
+    }
+
+    public function vouchers()
+    {
+        return $this->hasMany(Voucher::class);
     }
 }

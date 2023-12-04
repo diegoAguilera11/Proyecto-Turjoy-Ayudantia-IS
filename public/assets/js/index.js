@@ -24,13 +24,13 @@ const verifySeating = () => {
     const date = datePicker.value;
 
     if (origin && destination && date) {
+
         fetch(`/seating/${origin}/${destination}/${date}`)
             .then(response => response.json())
             .then(data => {
                 // Manipula los datos recibidos aquí
-                console.log(data.seat);
+                // console.log(data.seat);
                 addSeatingToSelect(data.seat, data.travel);
-                // console.log(data);
 
             })
             .catch(error => {

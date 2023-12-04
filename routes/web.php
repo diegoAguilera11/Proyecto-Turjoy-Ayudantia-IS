@@ -36,10 +36,16 @@ Route::post('/check', [TravelController::class, 'checkTravel'])->name('travels.c
 Route::post('/reservation', [TicketController::class, 'store'])->name('add-reservation');
 
 Route::middleware(['auth'])->group(function () {
+    // Travel routes
     Route::get('/dashboard', [UserController::class, 'dashboardIndex'])->name('dashboard');
     Route::get('/add/travel', [TravelController::class, 'indexAddTravels'])->name('travels.index');
     Route::post('/addtravel', [TravelController::class, 'travelCheck'])->name('travel.check');
     Route::get('/result/travels', [TravelController::class, 'indexTravels'])->name('travelsAdd.index');
+
+    // Ticket Report Routes
+    Route::get('/ticket/report', [TicketController::class, 'ticketReportIndex'])->name('report-ticket.index');
+    Route::get('/ticket/report/{tickets}', [TicketController::class, 'ticketReportSearchIndex'])->name('report-ticket-search.index');
+    Route::post('/search-ticket', [TicketController::class, 'searchToDate'])->name('searchToDate');
 });
 
 // Voucher
