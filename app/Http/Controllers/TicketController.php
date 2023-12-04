@@ -10,8 +10,7 @@ class TicketController extends Controller
 {
     public function ticketReportIndex()
     {
-        // Obtener todos los ticket
-        $tickets = Ticket::all();
+        $tickets = Ticket::paginate(5);
 
         return view('admin.tickets.reports.index', [
             'tickets' => $tickets,
@@ -44,22 +43,15 @@ class TicketController extends Controller
         $finishDate = $request->finishDate;
 
         // Filtrado
-        $tickets = Ticket::whereBetween('date', [$initDate, $finishDate])->get();
+        $tickets = Ticket::whereBetween('date', [$initDate, $finishDate])->paginate(5);
 
         if ($tickets->count() === 0) {
             return back()->with('message', 'no se encontraron reservas dentro del rango seleccionado');
-            // dd(' no hay tickets');
-        } else {
-            // Retornar los tickets segun el rango de fecha.....
-            // $ticketIds = $tickets->pluck('id')->toArray();
-            $ticketIds = $tickets->pluck('id')->implode(',');
-
-            // dd($ticketIds);
-
-            return redirect()->route('report-ticket-search.index', [
-                'tickets' => $ticketIds,
-            ]);
         }
+
+        return view('admin.tickets.reports.index', [
+            'tickets' => $tickets,
+        ]);
     }
 
     public function store(Request $request)

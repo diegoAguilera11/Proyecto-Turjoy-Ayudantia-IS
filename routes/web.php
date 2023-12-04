@@ -44,10 +44,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Ticket Report Routes
     Route::get('/ticket/report', [TicketController::class, 'ticketReportIndex'])->name('report-ticket.index');
-    Route::get('/ticket/report/{tickets}', [TicketController::class, 'ticketReportSearchIndex'])->name('report-ticket-search.index');
-    Route::post('/search-ticket', [TicketController::class, 'searchToDate'])->name('searchToDate');
+    Route::get('/search-ticket', [TicketController::class, 'searchToDate'])->name('searchToDate');
 });
-
 // Voucher
 Route::get('/travel-reservation/{id}', [VoucherController::class, 'generatePDF'])->name('generate.pdf');
 Route::get('download-pdf/{id}', [VoucherController::class, 'downloadPDF'])->name('pdf.download');

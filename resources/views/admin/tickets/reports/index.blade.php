@@ -5,13 +5,16 @@
 
     @if ($tickets->count() > 0)
         <div class="flex justify-center gap-4">
-            <a href="#" class="bg-yellow-300 transition-all my-auto py-4 px-4 text-white rounded-lg">
-                <svg class="w-5 h-5 hover:animate-spin text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
-                  </svg>
+            <a href="{{ route('report-ticket.index') }}"
+                class="bg-yellow-300 transition-all my-auto py-4 px-4 text-white rounded-lg">
+                <svg class="w-5 h-5 hover:animate-spin text-gray-800 dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97" />
+                </svg>
             </a>
 
-            <form action="{{ route('searchToDate') }}" method="POST">
+            <form action="{{ route('searchToDate') }}" method="GET">
                 @csrf
                 <div class="flex justify-center gap-4 my-4">
                     <div class="relative max-w-sm">
@@ -40,7 +43,8 @@
                             placeholder="Select date">
                     </div>
 
-                    <button class="bg-green-500 hover:bg-green-700 transition-all py-2 px-4 text-white rounded-lg">
+                    <button type="submit"
+                        class="bg-green-500 hover:bg-green-700 transition-all py-2 px-4 text-white rounded-lg">
                         Buscar
                     </button>
                 </div>
@@ -118,6 +122,11 @@
                 </tbody>
             </table>
         </div>
+        @if ($tickets)
+            <div class="flex justify-center items-center mx-auto my-8">
+                {{ $tickets->links('pagination::tailwind') }}
+            </div>
+        @endif
     @else
         <p>no hay reservas en sistema</p>
     @endif
